@@ -9,17 +9,21 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 
 builder.Services.AddSingleton<ConnectionDB>();
+
 builder.Services.AddSingleton<CategoryRepository>();
 builder.Services.AddSingleton<CategoryService>();
+
+builder.Services.AddSingleton<RoleRepository>();
+builder.Services.AddSingleton<RoleRepository>();
+
+builder.Services.AddSingleton<TagRepository>();
+builder.Services.AddSingleton<TagRepository>();
 
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
 
 app.UseHttpsRedirection();
-
 app.UseAuthorization();
-
 app.MapControllers();
-
 app.Run();
