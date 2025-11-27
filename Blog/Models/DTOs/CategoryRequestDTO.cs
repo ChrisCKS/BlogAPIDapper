@@ -7,5 +7,10 @@
     public class CategoryRequestDTO
     {
         public string Name { get; private set; }
+
+        public CategoryRequestDTO(string name)
+        {
+            Name = name;
+        }
     }
 }
