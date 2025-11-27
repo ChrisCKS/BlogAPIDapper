@@ -31,8 +31,35 @@ namespace Blog.API.Services
             var newCategory = new Category(category.Name, category.Name.ToLower().Replace(" ", "-"));
 
             await _categoryRepository.CreateCategoryAsync(newCategory);
-            //O Service envia o modelo Category já pronto para o Repository
+            //Envia o modelo Category já pronto para o Repository
             //O Repository faz o INSERT no banco
+        }
+
+        public async Task<CategoryResponseDTO> GetCategoryIdAsync(int id) 
+        {
+            return await _categoryRepository.GetCategoryIdAsync(id);
+            //A requisição é encaminhada para o repositório para buscar a categoria
+        }
+
+        public async Task UpdateCategoryAsync(int id, CategoryRequestDTO category) 
+        {
+            var categoryExist = await _categoryRepository.GetCategoryIdAsync(id);
+            if (categoryExist == null)
+                throw new Exception("Categoria não encontrada.");
+
+            var updateCategory = new Category(category.Name, category.Name.ToLower().Replace(" ", "-"));
+
+            await _categoryRepository.UpdateCategoryAsync(id, updateCategory);
+            //Chama o repositório para atualizar a categoria e passa o id e o objeto Category atualizado
+        }
+
+        public async Task DeleteCategoryAsync(int id)
+        {
+            var categoryExist = await _categoryRepository.GetCategoryIdAsync(id);
+            if (categoryExist == null)
+                throw new Exception("Categoria não encontrada.");
+
+            await _categoryRepository.DeleteCategoryAsync(id);
         }
     }
 }

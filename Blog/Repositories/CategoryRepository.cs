@@ -29,7 +29,7 @@ namespace Blog.API.Repositories
             //QueryAsync<>()-> roda a query e mapeia cada linha para um objeto do tipo CategoryResponseDTO
         }
 
-        //Recebe um objeto Category criado pelo Service.
+
         public async Task CreateCategoryAsync(Category category)
         {
           var sql = "INSERT INTO Category (Name, Slug) VALUES (@Name, @Slug)";  
@@ -37,6 +37,28 @@ namespace Blog.API.Repositories
           await _connection.ExecuteAsync(sql, new {category.Name, category.Slug });
             //subs @Name por category.Name e Slug por category.Slug
             //esse objeto anonimo cria automaticamente os parametros
+        }
+
+        //buscando a categoria pelo Id
+        public async Task<CategoryResponseDTO> GetCategoryIdAsync(int id)
+        {
+            var sql = "SELECT Name, Slug FROM  Category WHERE Id = @Id";
+
+            return await _connection.QueryFirstOrDefaultAsync<CategoryResponseDTO>(sql, new {id});
+        }
+
+        public async Task UpdateCategoryAsync(int id, Category category) 
+        {
+            var sql = @"UPDATE Category SET Name = @Name, Slug = @Slug WHERE Id = @Id";
+
+            await _connection.ExecuteAsync(sql, new { Id = id, category.Name, category.Slug});
+        }
+
+        public async Task DeleteCategoryAsync(int id) 
+        {
+            var sql = "DELETE FROM Category WHERE Id = @Id";
+
+            await _connection.ExecuteAsync(sql, new {Id = id});
         }
     }
 }
